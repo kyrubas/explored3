@@ -1,0 +1,50 @@
+<html lang="en">
+  <head>
+    <title>Barchart Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+    .chart div{
+      font: 10px sans-serif;
+      background-color: steelblue;
+      text-align: right;
+      padding: 3px;
+      margin: 1px;
+      color: white;
+    }
+
+    .schart text {
+      fill: white;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+
+    .schart rect {
+      fill: steelblue;
+    }
+
+    </style>
+  </head>
+  <body>
+    <h1>DIV Based Chart</h1>
+    <div class="chart"></div>
+    <script>
+      var mydata = [42,55,67,22,11,55,35,77,53,34];
+      var width = d3.select("body").node().getBoundingClientRect().width/3;
+      var thescale = d3.scaleLinear()
+      .domain([0, d3.max(mydata)])
+      .range([0, width]);
+
+      d3.select(".chart")
+        .selectAll("div")
+          .data(mydata)
+        .enter().append("div")
+          .style("width", function(d) {return thescale(d) +"px";})
+          .text(function(d){return d;});
+
+      d3.select("body")
+        .append('div')
+        .html("Hey there!");
+    </script>
+  </body>
+</html>
