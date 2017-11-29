@@ -34,19 +34,13 @@
                           .data(data)
                         .enter().append("g")
                         .attr("transform", function(d, i){ return "translate(150," + i * barheight + ")"; })
+                        .attr("orig_y", function(d, i){ return i * barheight; })
                         .on("mouseover", function(d,mosi) {
                           var g = d3.select(this);
                           var therec = g.select('rect')
                             .transition(500)
                             .style('fill','red')
-                            .attr("height", barheight*14 - 0.75)
-                            .attr("origy",function(d){
-                              var posdat = d3.select(this).attr("transform"),
-                                splitstr = posdat.split(","),
-                                x = parseInt(splitstr[0].slice(splitstr[0].indexOf("(")+1,)),
-                                y = parseInt(splitstr[1].slice(0,-1));
-                                return y;
-                            });
+                            .attr("height", barheight*14 - 0.75);
                           var info = g.append('text')
                             .classed('info', true)
                             .attr('x', function(d) { return thescale(d.GDP); })
@@ -83,18 +77,7 @@
                             .attr("height", barheight - 0.75);
                           var gs = svgchart.selectAll("g");
                           gs.transition(1500).attr("transform", function(d, i){
-                            var barypos = mosi * barheight;
-                            // get current x, y
-                            var posdat = d3.select(this).attr("transform"),
-                              splitstr = posdat.split(","),
-                              x = parseInt(splitstr[0].slice(splitstr[0].indexOf("(")+1,)),
-                              y = parseInt(splitstr[1].slice(0,-1));
-                            console.log(y)
-                            if (y > barypos+barheight) {
-                              return "translate("+ x +","+ (y - barheight*14) + ")";
-                            }else {
-                              return "translate(" +x+","+y+")";
-                            }
+                            return "translate(150," + d3.select(this).attr('orig_y') + ")";
                           });
                         });
       barsvgchart.append("rect")
